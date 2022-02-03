@@ -1,12 +1,25 @@
-name: parallel-jobs
+name: job-matrix
 on:
   push:
 jobs:
-  job-a:
-    runs-on: ubuntu-latest
+  my-job:
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, ubuntu-18.04]
+        node: [6, 8, 10]
+        exclude:
+          -
+            os: ubuntu-16.04
+            node: 6
+        include:
+          -
+            os: macos-latest
+            node: 10
+    runs-on: ${{ matrix.os }}
     steps:
-      - run: echo "Doing work"
-  job-b:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "More work at the same time"
+      -
+        uses: actions/setup-node@2
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install
+      - run: npm test
