@@ -25,3 +25,4 @@ jobs:
           echo "Event:          $GITHUB_EVENT_NAME"
           echo "SHA:            $GITHUB_SHA"
           echo "Ref:            $GITHUB_REF"
+          echo "Var:            $GITHUB_ENV"
