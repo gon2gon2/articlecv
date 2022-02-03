@@ -1,25 +1,27 @@
-name: event-triggers-example
+name: env-vars-example
 on:
-  push:                   # trigger on push 
-    branches: 
-      - 'develop'
-      - 'foo/*'
-      - 'foo/**'
-      - '!foo/*/456'
-    tags:
-      - '*'
-  pull_request:
-    branches:
-      - 'develop'
-  schedule:
-    - cron: '*/15 * * * *'
+  push:
+env:
+  VENI: 'I came'
 jobs:
-  say-hello:
+  use-env-vars:
     runs-on: ubuntu-latest
+    env:
+      VIDI: 'I saw'
     steps:
       -
-        name: Event
-        run: echo "Triggered by $GITHUB_EVENT_NAME"
+        name: Show me the vars
+        run: echo "$VENI, $VIDI, $VICI"
+        env:
+          VICI: 'I conquered'
       -
-        name: Say Hello
-        run: echo "Hello world!"
+        name: Create env var
+        run: echo "foo=bar" >> $GITHUB_ENV
+      -
+        name: Useful default vars
+        run: |
+          echo "Workflow name:  $GITHUB_WORKFLOW"
+          echo "Workspace:      $GITHUB_WORKSPACE"
+          echo "Event:          $GITHUB_EVENT_NAME"
+          echo "SHA:            $GITHUB_SHA"
+          echo "Ref:            $GITHUB_REF"
